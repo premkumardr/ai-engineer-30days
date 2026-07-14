@@ -1,4 +1,3 @@
-cat > claude/ai-engineer-30day-linkedin/README.md << 'MAINREADME'
 # 🤖 30-Day AI Engineer LinkedIn Content Series
 
 > **The complete, production-grade AI Engineer content series** — 10 concept posts + 20 enterprise project repositories with full implementation code, architecture, and LinkedIn posts.
