@@ -1,0 +1,36 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    restart: unless-stopped
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: rag_user
+      POSTGRES_PASSWORD: rag_password
+      POSTGRES_DB: rag_db
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rag_user -d rag_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    # Load all variables from .env on the host into the container
+    env_file:
+      - .env
+    environment:
+      # Override DATABASE_URL to use the service name, not localhost
+      DATABASE_URL: postgresql+asyncpg://rag_user:rag_password@postgres:5432/rag_db
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  pgdata:

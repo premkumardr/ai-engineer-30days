@@ -1,0 +1,4 @@
+.env.*
+.env.openai
+*.pyc
+__pycache__/
